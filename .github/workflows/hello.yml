@@ -30,7 +30,7 @@ jobs:
       - name: Run tests
         run: |
           cat build.txt
-        echo "TESTS PASSED"
+          echo "TESTS PASSED"
   
   deploy:
     run-on: ubuntu-latest
