@@ -20,7 +20,7 @@ jobs:
           path: build.txt
   test:
     runs-on: ubuntu-latest
-    need: build
+    needs: build
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -33,7 +33,7 @@ jobs:
           echo "TESTS PASSED"
   
   deploy:
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     needs: test
     steps:
       - name: Simulated dpeloy
