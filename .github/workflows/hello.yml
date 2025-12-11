@@ -1,40 +1,34 @@
-name: Multi-stage CI
+name: Matrix + Cache CI
 
 on:
   push:
 
 jobs:
-  build:
+  test-matrix:
     runs-on: ubuntu-latest
+    strategy:
+    matrix:
+      python-version: [3.8, 3.9, 3.10]
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: build artifact
-        run: |
-          echo "BUILD SUCESS" > build.txt
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          name: build-output
-          path: build.txt
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-output
+          python-version: ${{ matrix.python-version }}
 
-      - name: Run tests
-        run: |
-          cat build.txt
-          echo "TESTS PASSED"
-  
-  deploy:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Simulated dpeloy
-        run: echo "DEPLOY SUCESSS"
+      - name: cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ matrix.python-version }}
+          restore-keys: |
+            pip-${{ runner.os }}
+
+      - name: Install dependency
+        run: pip install requests
+
+
+      - name: Run test script
+        run: python3 -c "print('TEST OK for', '${{ matrix.python.version}}')"
