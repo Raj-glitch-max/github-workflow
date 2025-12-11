@@ -1,0 +1,17 @@
+name: broken Ci drill
+
+on:
+  push:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Python???
+              run: python3 --version
+
+            - name: Run test
+              run: python script.py
+              
