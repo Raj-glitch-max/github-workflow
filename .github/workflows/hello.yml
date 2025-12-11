@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10]
+        python-version: ['3.8', '3.9', '3.10']
 
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: cache pip packages
+      - name: Cache pip packages
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
@@ -29,6 +29,6 @@ jobs:
       - name: Install dependency
         run: pip install requests
 
-
       - name: Run test script
-        run: python3 -c "print('TEST OK for', '${{ matrix.python.version}}')"
+        run: python3 -c "print('TEST OK for', '${{ matrix.python-version }}')"
+
