@@ -1,0 +1,27 @@
+name: Common Build Workflow
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Echo app name
+        run: |
+          echo "Building application: ${{ inputs.app_name }}"
+
+      - name: Create artifact
+        run: echo "artifact for ${{ inputs.app_name }}" > app-artifact.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: app-artifact.txt
