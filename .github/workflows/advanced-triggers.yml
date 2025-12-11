@@ -1,0 +1,31 @@
+name: Advanced Triggers
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose environment"
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - production
+
+  schedule:
+    - cron: "0 0 * * *"   # runs every day at midnight
+
+  pull_request:
+    branches: [main]
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show trigger type
+        run: |
+          echo "Triggered by: $GITHUB_EVENT_NAME"
+
+      - name: Show chosen environment
+        if: ${{ github.event.inputs.environment }}
+        run: echo "Environment: ${{ github.event.inputs.environment }}"
